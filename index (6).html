@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ankita Saha</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=Nunito:wght@400;500;600;700&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:        #75aadb;
+      --blue-dark:   #1d4f8e;
+      --blue-deep:   #0d2d5e;
+      --blue-pale:   #e8f2fb;
+      --blue-mid:    #dceefa;
+      --blue-dim:    rgba(117,170,219,0.12);
+      --white:       #ffffff;
+      --off:         #f5f9ff;   /* very faint blue-white */
+      --ink:         #0f1f3d;
+      --mid:         #5a6a88;
+      --light:       #a8bcd4;
+      --hand:        'Caveat', cursive;
+      --serif:       'Lora', Georgia, serif;
+      --sans:        'Nunito', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      background: var(--white);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 58px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem;
+      background: rgba(255,255,255,0.93);
+      backdrop-filter: blur(10px);
+      border-bottom: 1.5px solid rgba(117,170,219,0.2);
+    }
+    .nav-name {
+      font-family: var(--hand); font-size: 1.4rem; font-weight: 600;
+      color: var(--blue-dark); text-decoration: none;
+    }
+    .nav-links { display: flex; list-style: none; gap: 0.2rem; }
+    .nav-links a {
+      font-size: 0.82rem; font-weight: 600; letter-spacing: 0.03em;
+      color: var(--mid); text-decoration: none;
+      padding: 0.38rem 0.85rem; border-radius: 20px;
+      transition: background 0.18s, color 0.18s;
+    }
+    .nav-links a:hover { background: var(--blue-pale); color: var(--blue-dark); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      padding-top: 58px;
+      background: var(--off);
+      display: flex; flex-direction: column;
+      position: relative; overflow: hidden;
+    }
+    /* soft blobs — not hard geometric shapes */
+    .hero-blob {
+      position: absolute; border-radius: 50%;
+      pointer-events: none; filter: blur(70px);
+    }
+    .hero-blob-1 {
+      width: 640px; height: 640px;
+      background: rgba(117,170,219,0.18);
+      top: -200px; right: -180px;
+      animation: drift 12s ease-in-out infinite;
+    }
+    .hero-blob-2 {
+      width: 380px; height: 380px;
+      background: rgba(29,79,142,0.08);
+      bottom: 40px; left: -80px;
+    }
+    @keyframes drift {
+      0%,100% { transform: translate(0,0) scale(1); }
+      50%      { transform: translate(-30px, 25px) scale(1.06); }
+    }
+
+    .hero-body {
+      flex: 1;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 6vw 7vw 3vw;
+      position: relative; z-index: 2;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--hand); font-size: 1.2rem; font-weight: 500;
+      color: var(--blue); margin-bottom: 0.75rem;
+      opacity: 0; animation: up 0.5s 0.1s forwards;
+    }
+    .hero-h1 {
+      font-family: var(--serif); font-weight: 600; font-style: italic;
+      font-size: clamp(4.5rem, 11vw, 9.5rem);
+      line-height: 0.92; letter-spacing: -0.02em;
+      color: var(--ink);
+      opacity: 0; animation: up 0.7s 0.2s forwards;
+      margin-bottom: 1.5rem;
+    }
+    .hero-h1 em {
+      font-style: normal;
+      color: var(--blue-dark);
+      position: relative; display: inline-block;
+    }
+    /* hand-drawn underline on name */
+    .hero-h1 em::after {
+      content: '';
+      position: absolute; left: 0; bottom: 6px; right: 0; height: 5px;
+      background: var(--blue-pale);
+      border-radius: 3px; z-index: -1;
+    }
+    .hero-sub {
+      font-size: 1.1rem; font-weight: 400; color: var(--mid);
+      line-height: 1.75; max-width: 520px;
+      opacity: 0; animation: up 0.7s 0.35s forwards;
+      margin-bottom: 2rem;
+    }
+    .hero-sub strong { color: var(--ink); font-weight: 600; }
+
+    .hero-ctas {
+      display: flex; gap: 0.75rem; flex-wrap: wrap;
+      opacity: 0; animation: up 0.7s 0.45s forwards;
+    }
+    .btn-solid {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--blue-dark); color: var(--white);
+      font-family: var(--sans); font-weight: 700; font-size: 0.85rem;
+      padding: 0.7rem 1.6rem; text-decoration: none;
+      border-radius: 30px;
+      box-shadow: 0 4px 16px rgba(29,79,142,0.25);
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-solid:hover { background: var(--blue-deep); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(29,79,142,0.3); }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: transparent; color: var(--blue-dark);
+      font-family: var(--sans); font-weight: 600; font-size: 0.85rem;
+      padding: 0.7rem 1.6rem; text-decoration: none;
+      border-radius: 30px; border: 2px solid rgba(29,79,142,0.35);
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--blue-dark); background: var(--blue-dim); }
+
+    /* stack strip */
+    .hero-strip {
+      position: relative; z-index: 2;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 1rem;
+      padding: 1.25rem 7vw;
+      border-top: 1px dashed rgba(117,170,219,0.3);
+      background: rgba(255,255,255,0.6);
+      opacity: 0; animation: up 0.7s 0.6s forwards;
+    }
+    .strip-label {
+      font-family: var(--hand); font-size: 1rem; color: var(--light);
+      flex-shrink: 0;
+    }
+    .stack-pills { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .stack-pill {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-size: 0.78rem; font-weight: 600;
+      color: var(--mid); background: var(--white);
+      border: 1.5px solid rgba(117,170,219,0.25);
+      padding: 0.25rem 0.7rem; border-radius: 20px;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+      cursor: default;
+    }
+    .stack-pill:hover { border-color: var(--blue); color: var(--blue-dark); background: var(--blue-pale); }
+    .pill-icon { width: 14px; height: 14px; }
+
+    @keyframes up {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* ── REVEAL ── */
+    .reveal {
+      opacity: 0; transform: translateY(22px);
+      transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+    }
+    .reveal.on { opacity: 1; transform: none; }
+    .reveal-d1 { transition-delay: 0.1s; }
+    .reveal-d2 { transition-delay: 0.2s; }
+
+    /* ── SECTION SHARED ── */
+    .sec { padding: 5rem 0; }
+    .sec-inner { width: min(1100px, 90%); margin: 0 auto; }
+    .sec-kicker {
+      font-family: var(--hand); font-size: 1.05rem; font-weight: 500;
+      color: var(--blue); display: block; margin-bottom: 0.3rem;
+    }
+    .sec-title {
+      font-family: var(--serif); font-weight: 600; font-style: italic;
+      font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.15; color: var(--ink);
+      margin-bottom: 2.5rem;
+    }
+    .sec-title em { font-style: normal; color: var(--blue-dark); }
+
+    /* ── ABOUT ── */
+    #about { background: var(--white); }
+    .about-card {
+      background: var(--off);
+      border-radius: 20px;
+      border: 1.5px solid rgba(117,170,219,0.2);
+      padding: 2.75rem 3rem;
+      display: grid; grid-template-columns: 1.6fr 1fr; gap: 3rem;
+    }
+    .about-copy {
+      font-family: var(--serif); font-size: 1.1rem; font-style: italic;
+      font-weight: 400; line-height: 1.85; color: var(--ink);
+    }
+    .about-copy strong { font-style: normal; font-weight: 600; }
+    .about-copy p + p { margin-top: 1.15rem; }
+    .about-aside { display: flex; flex-direction: column; gap: 1.75rem; }
+    .aside-kicker {
+      font-family: var(--hand); font-size: 0.95rem; color: var(--blue);
+      display: block; margin-bottom: 0.6rem;
+    }
+    .aside-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .aside-chip {
+      font-size: 0.8rem; font-weight: 600; color: var(--mid);
+      background: var(--white); border: 1.5px solid rgba(117,170,219,0.25);
+      padding: 0.22rem 0.65rem; border-radius: 12px;
+    }
+
+    /* ── PROJECTS ── */
+    #projects { background: var(--blue-dark); }
+    #projects .sec-kicker { color: var(--blue); }
+    #projects .sec-title { color: var(--white); }
+    #projects .sec-title em { color: var(--blue); }
+
+    .proj-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: rgba(255,255,255,0.08);
+      border-radius: 16px; overflow: hidden;
+    }
+    .proj-card {
+      padding: 2.25rem 2rem;
+      background: rgba(13,45,94,0.4);
+      text-decoration: none; color: inherit;
+      display: flex; flex-direction: column;
+      transition: background 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .proj-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--blue), #a8d4f5);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
+    }
+    .proj-card:hover { background: rgba(13,45,94,0.7); }
+    .proj-card:hover::before { transform: scaleX(1); }
+    .proj-num {
+      font-family: var(--hand); font-size: 1.15rem;
+      color: rgba(117,170,219,0.3); margin-bottom: 0.9rem;
+      transition: color 0.2s;
+    }
+    .proj-card:hover .proj-num { color: var(--blue); }
+    .proj-name {
+      font-family: var(--serif); font-size: 1.35rem; font-style: italic; font-weight: 600;
+      color: var(--white); margin-bottom: 0.55rem; flex: 1;
+    }
+    .proj-desc {
+      font-size: 0.88rem; font-weight: 400;
+      color: rgba(255,255,255,0.42); line-height: 1.65; margin-bottom: 1.5rem;
+    }
+    .proj-link {
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.05em;
+      color: rgba(117,170,219,0.45);
+      transition: color 0.2s;
+    }
+    .proj-card:hover .proj-link { color: var(--blue); }
+
+    /* ── PASSIONS ── */
+    #passions { background: var(--off); }
+    .passions-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .passion-cell {
+      background: var(--white); border-radius: 16px;
+      padding: 1.6rem 1.5rem;
+      border: 1.5px solid rgba(117,170,219,0.18);
+      transition: border-color 0.22s, transform 0.22s, box-shadow 0.22s;
+    }
+    .passion-cell:hover {
+      border-color: var(--blue);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(117,170,219,0.18);
+    }
+    .passion-icon { font-size: 1.6rem; margin-bottom: 0.7rem; display: block; }
+    .passion-cell h3 {
+      font-family: var(--serif); font-size: 1rem; font-style: italic; font-weight: 600;
+      color: var(--ink); margin-bottom: 0.4rem;
+    }
+    .passion-cell p { font-size: 0.84rem; color: var(--mid); line-height: 1.6; }
+
+    .awards-kicker {
+      font-family: var(--hand); font-size: 1rem; color: var(--blue);
+      display: block; margin-bottom: 0.75rem;
+    }
+    .award-row {
+      display: flex; align-items: flex-start; gap: 1.25rem;
+      padding: 0.85rem 1rem; border-radius: 10px;
+      transition: background 0.15s;
+    }
+    .award-row:hover { background: var(--blue-dim); }
+    .award-yr {
+      font-family: var(--hand); font-size: 1rem;
+      color: var(--blue-dark); width: 40px; flex-shrink: 0;
+    }
+    .award-txt { font-size: 0.93rem; color: var(--ink); line-height: 1.5; padding-top: 2px; }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--white); }
+    .contact-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+      align-items: start;
+    }
+    .contact-tagline {
+      font-family: var(--serif); font-size: clamp(1.4rem, 2.8vw, 2rem);
+      font-style: italic; line-height: 1.5; color: var(--light);
+      margin-bottom: 2rem;
+    }
+    .contact-tagline strong { color: var(--ink); font-style: normal; }
+    .links-list { display: flex; flex-direction: column; gap: 0.2rem; }
+    .link-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.85rem 1rem; border-radius: 10px;
+      text-decoration: none; color: var(--mid); font-weight: 600; font-size: 0.92rem;
+      transition: background 0.18s, color 0.18s;
+    }
+    .link-row:hover { background: var(--blue-pale); color: var(--blue-dark); }
+    .link-name { display: flex; align-items: center; gap: 0.6rem; }
+    .link-arrow { font-size: 0.9rem; transition: transform 0.18s; }
+    .link-row:hover .link-arrow { transform: translate(3px,-3px); }
+
+    .cf-group { display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 0.9rem; }
+    .cf-label {
+      font-family: var(--hand); font-size: 0.95rem; color: var(--blue-dark);
+    }
+    .cf {
+      background: var(--off); border: 1.5px solid rgba(117,170,219,0.25);
+      border-radius: 10px;
+      font-family: var(--sans); font-size: 0.95rem; color: var(--ink);
+      padding: 0.65rem 0.9rem; outline: none;
+      transition: border-color 0.18s, background 0.18s;
+    }
+    .cf::placeholder { color: var(--light); }
+    .cf:focus { border-color: var(--blue); background: var(--white); }
+    textarea.cf { resize: none; height: 96px; }
+    .cf-btn {
+      margin-top: 0.25rem;
+      padding: 0.7rem 1.75rem;
+      background: var(--blue-dark); color: var(--white);
+      border: none; border-radius: 30px;
+      font-family: var(--sans); font-size: 0.88rem; font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(29,79,142,0.22);
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .cf-btn:hover { background: var(--blue-deep); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(29,79,142,0.3); }
+    #form-msg { font-size: 0.8rem; color: var(--blue-dark); min-height: 1.2em; margin-top: 0.4rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--blue-deep);
+      padding: 1.25rem 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    footer span { font-family: var(--hand); font-size: 1rem; color: rgba(117,170,219,0.5); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .about-card { grid-template-columns: 1fr; }
+      .proj-grid { grid-template-columns: 1fr 1fr; }
+      .passions-grid { grid-template-columns: 1fr 1fr; }
+      .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    }
+    @media (max-width: 580px) {
+      .proj-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="#hero" class="nav-name">Ankita Saha ✦</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#passions">Passions</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+
+  <div class="hero-body">
+    <p class="hero-eyebrow">hey, I'm —</p>
+    <h1 class="hero-h1">
+      Ankita<br>
+      <em>Saha.</em>
+    </h1>
+    <p class="hero-sub">
+      Bengali-American <strong>developer, writer & artist</strong> based in Queens, NY.
+      Building with code, drawn to design, always caffeinated.
+    </p>
+    <div class="hero-ctas">
+      <a href="#projects" class="btn-solid">See my work →</a>
+      <a href="#contact" class="btn-ghost">Say hello</a>
+    </div>
+  </div>
+
+  <div class="hero-strip">
+    <span class="strip-label">I work with →</span>
+    <div class="stack-pills">
+      <span class="stack-pill">
+        <svg class="pill-icon" viewBox="0 0 32 32"><path fill="#e44d26" d="M5.902 27.201L3.655 2h24.69l-2.25 25.197L15.985 30z"/><path fill="#f16529" d="M16 27.858l8.17-2.265 1.922-21.532H16z"/><path fill="#ebebeb" d="M16 13.407h-4.09l-.282-3.165H16V7.151H8.25l.074.83.759 8.517H16zm0 8.027l-.014.004-3.442-.929-.22-2.465H9.221l.433 4.852 6.332 1.758.014-.004z"/><path fill="#fff" d="M15.989 13.407v3.091h3.806l-.358 4.009-3.448.93v3.216l6.337-1.757.046-.522.726-8.137.076-.83zm0-6.256v3.091h7.466l.062-.694.141-1.567.074-.83z"/></svg>
+        HTML5
+      </span>
+      <span class="stack-pill">
+        <svg class="pill-icon" viewBox="0 0 32 32"><path fill="#1572b6" d="M5.902 27.201L3.656 2h24.688l-2.249 25.197L15.985 30z"/><path fill="#33a9dc" d="M16 27.858l8.17-2.265 1.922-21.532H16z"/><path fill="#fff" d="M16 13.191h4.09l.28-3.149H16V6.95H8.25l.074.84.759 8.517H16zm0 8.222l-.014.003-3.442-.93-.22-2.465H9.221l.433 4.853 6.332 1.758.014-.003z"/><path fill="#ebebeb" d="M15.989 13.191v3.091h3.806l-.358 4.009-3.448.93v3.216l6.337-1.758.046-.521.726-8.137.076-.83zm0-6.241v3.091h7.466l.062-.694.141-1.567.074-.83z"/></svg>
+        CSS3
+      </span>
+      <span class="stack-pill">
+        <svg class="pill-icon" viewBox="0 0 32 32"><path fill="#f0db4f" d="M0 0h32v32H0z"/><path d="M20.809 23.875a2.866 2.866 0 002.6 1.6c1.09 0 1.787-.545 1.787-1.3 0-.9-.716-1.222-1.916-1.747l-.658-.282c-1.9-.809-3.16-1.822-3.16-3.964 0-1.973 1.5-3.476 3.853-3.476a3.889 3.889 0 013.742 2.107l-2.048 1.315a1.793 1.793 0 00-1.694-1.131 1.149 1.149 0 00-1.262 1.131c0 .792.489 1.114 1.621 1.6l.658.282c2.236.959 3.5 1.939 3.5 4.14 0 2.372-1.861 3.668-4.362 3.668a5.059 5.059 0 01-4.775-2.691zm-9.295.228c.413.733.789 1.353 1.689 1.353.862 0 1.407-.338 1.407-1.653v-8.947h2.52v8.984c0 2.723-1.6 3.963-3.926 3.963a4.075 4.075 0 01-3.942-2.447z"/></svg>
+        JavaScript
+      </span>
+      <span class="stack-pill">
+        <svg class="pill-icon" viewBox="0 0 32 32"><path fill="#3776ab" d="M15.885 2.1c-7.1 0-6.651 3.07-6.651 3.07v3.19h6.752v.96H6.545S2 8.8 2 16.005s4.013 6.912 4.013 6.912H8.33v-3.361s-.13-4.013 3.95-4.013h6.812s3.816.062 3.816-3.69V5.8s.58-3.7-6.023-3.7zm-3.782 2.139a1.214 1.214 0 11-1.214 1.214 1.213 1.213 0 011.214-1.214z"/><path fill="#ffd43b" d="M16.115 29.9c7.1 0 6.651-3.07 6.651-3.07v-3.19H15.97v-.96h9.441S30 23.2 30 15.995s-4.013-6.912-4.013-6.912H23.67v3.361s.13 4.013-3.95 4.013h-6.812s-3.816-.062-3.816 3.69v6.053s-.58 3.7 6.023 3.7zm3.782-2.139a1.214 1.214 0 111.214-1.214 1.213 1.213 0 01-1.214 1.214z"/></svg>
+        Python
+      </span>
+      <span class="stack-pill">
+        <svg class="pill-icon" viewBox="0 0 32 32"><path fill="#007396" d="M16.7 3L1 6.6v18.8l3.2.7V9.5l12.4-2.8V26l-7.4-1.7-1.2 2.9 8.7 2 13.3-3V6.3z"/></svg>
+        Java
+      </span>
+      <span class="stack-pill">
+        <svg class="pill-icon" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="#087ea4"/><path fill="#fff" d="M16 9.6c3.5 0 6.3 1.1 6.3 2.4 0 1.3-2.8 2.4-6.3 2.4S9.7 13.3 9.7 12c0-1.3 2.8-2.4 6.3-2.4zm0 5.4c1.4 0 2.7-.2 3.7-.5l-3.7 6.4-3.7-6.4c1 .3 2.3.5 3.7.5zm0 8c-3.5 0-6.3-1.1-6.3-2.4v-.1l3.6-6.2c.8.2 1.7.3 2.7.3s1.9-.1 2.7-.3l3.6 6.2v.1c0 1.3-2.8 2.4-6.3 2.4z"/></svg>
+        React
+      </span>
+      <span class="stack-pill">
+        <svg class="pill-icon" viewBox="0 0 32 32"><path fill="#f05032" d="M29.472 14.753l-12.225-12.225a1.76 1.76 0 00-2.489 0L12.3 4.985l2.932 2.932a2.089 2.089 0 012.641 2.663l2.824 2.824a2.09 2.09 0 11-1.253 1.176l-2.633-2.633v6.929a2.09 2.09 0 11-1.718-.068V11.8a2.09 2.09 0 01-1.136-2.742L12.04 6.2 2.528 15.71a1.76 1.76 0 000 2.489l12.225 12.225a1.76 1.76 0 002.489 0l12.23-12.182a1.76 1.76 0 000-2.489"/></svg>
+        Git
+      </span>
+      <span class="stack-pill">SQL</span>
+      <span class="stack-pill">Bootstrap</span>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="sec">
+  <div class="sec-inner">
+    <span class="sec-kicker reveal">a little about me</span>
+    <h2 class="sec-title reveal">About <em>me.</em></h2>
+    <div class="about-card reveal">
+      <div class="about-copy">
+        <p>I'm a <strong>Bengali-American senior</strong> born and raised in Queens. I fell in love with coding during quarantine — and that curiosity never left. I write for the <strong>Stuyvesant Spectator</strong>, do color-pencil realism, and spend too much time in cafés.</p>
+        <p>I volunteer at my local library every week. I'm a Mitchell who gives off Alex energy. I believe the best work sits at the intersection of <strong>code and craft.</strong></p>
+      </div>
+      <div class="about-aside">
+        <div>
+          <span class="aside-kicker">things I love</span>
+          <div class="aside-chips">
+            <span class="aside-chip">Journalism</span>
+            <span class="aside-chip">Storytelling</span>
+            <span class="aside-chip">Color pencil art</span>
+            <span class="aside-chip">Café hunting</span>
+            <span class="aside-chip">Hackathons</span>
+            <span class="aside-chip">Library volunteering</span>
+            <span class="aside-chip">Robotics</span>
+          </div>
+        </div>
+        <div>
+          <span class="aside-kicker">where I'm at</span>
+          <div class="aside-chips">
+            <span class="aside-chip">Stuyvesant HS</span>
+            <span class="aside-chip">Queens, NY</span>
+            <span class="aside-chip">Girls Who Code</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="sec">
+  <div class="sec-inner">
+    <span class="sec-kicker reveal">stuff I've made</span>
+    <h2 class="sec-title reveal">What I've <em>built.</em></h2>
+  </div>
+  <div style="width:min(1100px,90%);margin:0 auto;">
+    <div class="proj-grid reveal">
+      <a href="https://ankita320.github.io/A-Cool-Holiday-Advent-Calender/" target="_blank" class="proj-card">
+        <p class="proj-num">01</p>
+        <h3 class="proj-name">Advent Calendar</h3>
+        <p class="proj-desc">Interactive December countdown with daily reveals.</p>
+        <span class="proj-link">View project →</span>
+      </a>
+      <a href="https://ankita320.github.io/New-Year-Better-Me-/" target="_blank" class="proj-card">
+        <p class="proj-num">02</p>
+        <h3 class="proj-name">New Year, Better Me</h3>
+        <p class="proj-desc">Resolution & productivity tracker with habit tables.</p>
+        <span class="proj-link">View project →</span>
+      </a>
+      <a href="https://ankita320.github.io/Icecream-Sundae-Blackpink-Quiz/" target="_blank" class="proj-card">
+        <p class="proj-num">03</p>
+        <h3 class="proj-name">Blackpink Sundae Quiz</h3>
+        <p class="proj-desc">Build a sundae. Find out which member you are.</p>
+        <span class="proj-link">View project →</span>
+      </a>
+      <a href="https://ankita320.github.io/Survey-Form/" target="_blank" class="proj-card">
+        <p class="proj-num">04</p>
+        <h3 class="proj-name">Library Survey Form</h3>
+        <p class="proj-desc">Accessible survey for library patrons.</p>
+        <span class="proj-link">View project →</span>
+      </a>
+      <a href="https://ankita320.github.io/Technical-Documentation-Page/" target="_blank" class="proj-card">
+        <p class="proj-num">05</p>
+        <h3 class="proj-name">HTML & CSS Docs</h3>
+        <p class="proj-desc">Technical reference covering core web concepts.</p>
+        <span class="proj-link">View project →</span>
+      </a>
+      <a href="https://ankita320.github.io/Product-Landing-Page/" target="_blank" class="proj-card">
+        <p class="proj-num">06</p>
+        <h3 class="proj-name">Product Landing Page</h3>
+        <p class="proj-desc">Coffee-themed landing with newsletter & video.</p>
+        <span class="proj-link">View project →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- PASSIONS -->
+<section id="passions" class="sec">
+  <div class="sec-inner">
+    <span class="sec-kicker reveal">beyond the screen</span>
+    <h2 class="sec-title reveal">Passions & <em>awards.</em></h2>
+
+    <div class="passions-grid reveal">
+      <div class="passion-cell">
+        <span class="passion-icon">✒️</span>
+        <h3>Stuyvesant Spectator</h3>
+        <p>Staff writer covering campus life, faculty, and student culture.</p>
+      </div>
+      <div class="passion-cell">
+        <span class="passion-icon">💻</span>
+        <h3>Girls Who Code · KWK</h3>
+        <p>Building community and skills with women in computing.</p>
+      </div>
+      <div class="passion-cell">
+        <span class="passion-icon">🤖</span>
+        <h3>StuyHacks · Robotics</h3>
+        <p>Hackathons and robotics making tech accessible to all.</p>
+      </div>
+      <div class="passion-cell">
+        <span class="passion-icon">🎨</span>
+        <h3>Color Pencil Art</h3>
+        <p>Realism — blending layers, chasing light, lips & fruit.</p>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <span class="awards-kicker">recognition & awards</span>
+      <div class="award-row">
+        <span class="award-yr">2024</span>
+        <span class="award-txt">NCWIT Aspirations in Computing — NY Honorable Mention</span>
+      </div>
+      <div class="award-row">
+        <span class="award-yr">2024</span>
+        <span class="award-txt">Le Grand Concours — Bronze Medal, 75th–84th percentile</span>
+      </div>
+      <div class="award-row">
+        <span class="award-yr">2024</span>
+        <span class="award-txt">President's Volunteer Service Bronze Award — 150+ hours</span>
+      </div>
+      <div class="award-row">
+        <span class="award-yr">2024</span>
+        <span class="award-txt">QuestBridge College Prep Scholar</span>
+      </div>
+      <div class="award-row">
+        <span class="award-yr">2023</span>
+        <span class="award-txt">Young Member, New York Academy of Sciences</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="sec">
+  <div class="sec-inner">
+    <span class="sec-kicker reveal">let's talk!</span>
+    <h2 class="sec-title reveal">Say <em>hello.</em></h2>
+    <div class="contact-grid">
+      <div class="reveal">
+        <p class="contact-tagline">Open to <strong>internships,</strong><br>collabs, and <strong>conversations.</strong></p>
+        <div class="links-list">
+          <a href="https://github.com/ankita320" target="_blank" class="link-row">
+            <span class="link-name">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"/></svg>
+              GitHub
+            </span>
+            <span class="link-arrow">↗</span>
+          </a>
+          <a href="mailto:ankita@example.com" class="link-row">
+            <span class="link-name">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 01-2.06 0L2 7"/></svg>
+              Email
+            </span>
+            <span class="link-arrow">↗</span>
+          </a>
+          <a href="https://linkedin.com" target="_blank" class="link-row">
+            <span class="link-name">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              LinkedIn
+            </span>
+            <span class="link-arrow">↗</span>
+          </a>
+        </div>
+      </div>
+      <div class="reveal reveal-d2">
+        <div class="cf-group">
+          <label class="cf-label">Your name</label>
+          <input class="cf" type="text" placeholder="What should I call you?" id="cf-name" />
+        </div>
+        <div class="cf-group">
+          <label class="cf-label">Email</label>
+          <input class="cf" type="email" placeholder="you@somewhere.com" id="cf-email" />
+        </div>
+        <div class="cf-group">
+          <label class="cf-label">Subject</label>
+          <input class="cf" type="text" placeholder="What's on your mind?" id="cf-subject" />
+        </div>
+        <div class="cf-group">
+          <label class="cf-label">Message</label>
+          <textarea class="cf" placeholder="Tell me more..." id="cf-msg"></textarea>
+        </div>
+        <p id="form-msg"></p>
+        <button class="cf-btn" id="cf-submit">Send it →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2025 Ankita Saha</span>
+  <span>Queens, New York ✦</span>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); } });
+  }, { threshold: 0.07 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  document.getElementById('cf-submit').addEventListener('click', () => {
+    const name = document.getElementById('cf-name').value.trim();
+    const email = document.getElementById('cf-email').value.trim();
+    const msg = document.getElementById('cf-msg').value.trim();
+    const info = document.getElementById('form-msg');
+    if (!name || !email || !msg) {
+      info.style.color = '#e05252'; info.textContent = 'Please fill in all required fields.'; return;
+    }
+    info.style.color = 'var(--blue-dark)'; info.textContent = '✓ Message sent — I\'ll be in touch soon!';
+    ['cf-name','cf-email','cf-subject','cf-msg'].forEach(id => document.getElementById(id).value = '');
+    setTimeout(() => info.textContent = '', 4500);
+  });
+</script>
+</body>
+</html>
